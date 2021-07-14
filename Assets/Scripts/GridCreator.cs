@@ -8,33 +8,31 @@ public class GridCreator : MonoBehaviour
     private GameObject _pointPrefab;
 
     [SerializeField]
-    private int _rows;
+    private Vector2 _gridSize;
     [SerializeField]
-    private int _columns;
-    [SerializeField]
-    private Vector3 _gap;
+    GameObject stonePrefab;
 
-    private Vector3[,] _grid;
     private Vector3 _startPointPos;
+
+
 
     private void Awake()
     {
         _startPointPos = transform.position;
         //_grid = new Vector3[_columns, _rows];
 
-        for (int i = 0; i < _columns; i++)
+        for (int i = 0; i < _gridSize.y; i++)
         {
-            for (int j = 0; j < _rows; j++)
+            _startPointPos.x = transform.position.x + (1f / 9f) * i;
+
+            for (int j = 0; j < _gridSize.x; j++)
             {
-                Vector3 pos = _startPointPos + _gap;
-                //_grid[i, j] = pos;
                 var point = GameObject.Instantiate(_pointPrefab, transform);
-                point.transform.position = pos;
-                Debug.Log(pos);
-                _startPointPos = pos;
+                point.transform.position = _startPointPos;
+                _startPointPos.x += 1.1f;
             }
 
-            _gap.y = 0;
+            _startPointPos.y += 1; 
         }
     }
 }

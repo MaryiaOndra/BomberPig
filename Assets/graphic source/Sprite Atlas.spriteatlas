@@ -44,7 +44,7 @@ SpriteAtlas:
     variantMultiplier: 1
     packables:
     - {fileID: 102900000, guid: 1bd3431df9e9f8742b8cb955112070c1, type: 3}
-    totalSpriteSurfaceArea: 9648661
+    totalSpriteSurfaceArea: 9714197
     bindAsDefault: 1
     isAtlasV2: 0
     cachedData: {fileID: 0}
@@ -64,6 +64,7 @@ SpriteAtlas:
   - {fileID: 9093268807262632672, guid: 69cbacc1dd894da41acdbba1574df263, type: 3}
   - {fileID: 6772319772625878686, guid: 69cbacc1dd894da41acdbba1574df263, type: 3}
   - {fileID: -5563435931116900145, guid: 69cbacc1dd894da41acdbba1574df263, type: 3}
+  - {fileID: -2413806693520163455, guid: 96b346e31411da243beb3328c6c2ef3f, type: 3}
   - {fileID: 21300000, guid: 063ad24bbf8f66042bbfd49fe3876af8, type: 3}
   - {fileID: -1146434942223613854, guid: c4c1d6dc54358da4e98ca5e7dc6722ad, type: 3}
   - {fileID: 4232618656017457076, guid: c4c1d6dc54358da4e98ca5e7dc6722ad, type: 3}
@@ -98,6 +99,7 @@ SpriteAtlas:
   - farmer_angry_0
   - farmer_angry_3
   - farmer_angry_2
+  - Circle
   - grid
   - dog_2
   - dog_3
