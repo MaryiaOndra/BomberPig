@@ -13,8 +13,8 @@ public class Bomb : MonoBehaviour
     private GameObject _bombSprite;
     [SerializeField]
     private float _timeToEplode;
-    [SerializeField] 
-    int bombPower = 2;
+    [SerializeField]
+    int bombPower;
 
     private Vector2 _upAlign = new Vector2(Vector2.up.x + GridCreator._xAlign, Vector2.up.y);
     private Vector2 _downAlign = new Vector2(Vector2.down.x - GridCreator._xAlign, Vector2.down.y);   

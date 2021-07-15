@@ -76,10 +76,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d955742c1594407499ed152ca930d49e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _explosion: {fileID: 4119896199076914025}
   _explosionPrefab: {fileID: 717242483113100773, guid: d0cfa7aee16f65d4baa03bdb9b250872, type: 3}
   _bombSprite: {fileID: 8290970236719772523}
   _timeToEplode: 2
+  bombPower: 3
 --- !u!1 &8290970236719772523
 GameObject:
   m_ObjectHideFlags: 0
@@ -170,7 +170,7 @@ CircleCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8290970236719772523}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
