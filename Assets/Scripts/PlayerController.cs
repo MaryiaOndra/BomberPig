@@ -18,8 +18,15 @@ public class PlayerController : MonoBehaviour
     private Vector2 _movement;
     private Animator _animator;
 
+    public static PlayerController Instance { get; private set; }
+
     private void Awake()
     {
+        if (Instance == null) 
+        {
+            Instance = this;
+        }
+
         _rB = GetComponent<Rigidbody2D>();
         _animator = GetComponent<Animator>();
     }
@@ -46,8 +53,8 @@ public class PlayerController : MonoBehaviour
 
     private void ThrowBomb(Vector2 position) 
     {
-        Vector2 newPos = new Vector2(Mathf.RoundToInt(position.x), Mathf.RoundToInt(position.y));
-        Instantiate(_bombPrefab, newPos, Quaternion.identity);
+       // Vector2 newPos = new Vector2(Mathf.RoundToInt(position.x), Mathf.RoundToInt(position.y));
+        Instantiate(_bombPrefab, transform.position , Quaternion.identity);
     }
 
 
