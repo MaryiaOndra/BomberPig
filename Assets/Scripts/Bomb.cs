@@ -80,7 +80,6 @@ public class Bomb : MonoBehaviour
         }
     }
 
-
     public void DestroyBomb(float secToWait) 
     {
         Destroy(gameObject, secToWait);

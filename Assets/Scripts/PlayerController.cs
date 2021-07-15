@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,8 +7,6 @@ public class PlayerController : MonoBehaviour
 {
     private readonly int HORIZ_INT = Animator.StringToHash("Horizontal");
     private readonly int VERT_INT = Animator.StringToHash("Vertical");
-    private readonly int SPEED_INT = Animator.StringToHash("Speed");
-
 
     [SerializeField]
     private float _speed;
@@ -42,7 +41,6 @@ public class PlayerController : MonoBehaviour
 
         _animator.SetFloat(HORIZ_INT, _movement.x);
         _animator.SetFloat(VERT_INT, _movement.y);
-        _animator.SetFloat(SPEED_INT, _movement.sqrMagnitude);
     }
 
     private void FixedUpdate()
@@ -53,20 +51,10 @@ public class PlayerController : MonoBehaviour
 
     private void ThrowBomb(Vector2 position) 
     {
-       // Vector2 newPos = new Vector2(Mathf.RoundToInt(position.x), Mathf.RoundToInt(position.y));
         Instantiate(_bombPrefab, transform.position , Quaternion.identity);
-    }
-
+    }  
 
     private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.GetComponent<Bomb>())
-        {
-            Debug.Log("LOST  HEALTH");
-        }
-    }
-
-    private void OnTriggerStay2D(Collider2D collision)
     {
         if (collision.GetComponent<Bomb>())
         {

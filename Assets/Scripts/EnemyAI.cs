@@ -6,6 +6,7 @@ using UnityEngine;
 public class EnemyAI : MonoBehaviour
 {
     private enum State { Walking, Angry, Dirty}
+
     private const float MIN_DIST = 0.1f;
     private readonly int X = Animator.StringToHash("x");
     private readonly int Y = Animator.StringToHash("y");
@@ -18,21 +19,14 @@ public class EnemyAI : MonoBehaviour
     private List<GameObject> _waypoints;
 
     private int _randomSpot = 1;
-    private Vector2 _startPosition;
     private Vector2 _walkPosition;
     private State _currentState;
-    private Rigidbody2D _rigidbody2D;
     private Animator _animator;
     private Vector2 _direction;
     float timeRemaining = 3f;
 
-    private Vector2 _upAlign = new Vector2(Vector2.up.x + GridCreator._xAlign, Vector2.up.y);
-    private Vector2 _downAlign = new Vector2(Vector2.down.x - GridCreator._xAlign, Vector2.down.y);
-
     private void Awake()
     {
-        _rigidbody2D = GetComponent<Rigidbody2D>();
-        _startPosition = _waypoints[0].transform.position;
         _animator = GetComponent<Animator>();
         _currentState = State.Walking;
     }
@@ -56,13 +50,9 @@ public class EnemyAI : MonoBehaviour
                 _animator.SetLayerWeight(2, 1);
 
                 if (timeRemaining > 0)
-                {
                     timeRemaining -= Time.deltaTime;
-                }
                 else 
-                {
                     Walking();
-                }
                 break;
         }
 
@@ -84,8 +74,6 @@ public class EnemyAI : MonoBehaviour
             else
                 _randomSpot++;
         }
-
-        _startPosition = _walkPosition;
     }
 
     private void CheckDistance() 
@@ -97,16 +85,25 @@ public class EnemyAI : MonoBehaviour
         {
             _currentState = State.Angry;
             transform.position = Vector2.MoveTowards(transform.position, raycastHit2D.collider.transform.position, _speed * 1.2f * Time.deltaTime);
+
+            if (Vector2.Distance(transform.position, PlayerController.Instance.transform.position) < MIN_DIST * 10f)
+            {
+                LevelManager.Instance.RestartPanel();
+            }
         }
         else
             _currentState = State.Walking;
-    }
+    }    
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.GetComponent<Explosion>())
+        if (_currentState != State.Dirty)
         {
-            _currentState = State.Dirty;
+            if (collision.GetComponent<Explosion>())
+            {
+                _currentState = State.Dirty;
+                LevelManager.Instance.CheckLevelComplete();
+            }
         }
     }   
 }
