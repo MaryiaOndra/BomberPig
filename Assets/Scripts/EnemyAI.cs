@@ -17,14 +17,11 @@ public class EnemyAI : MonoBehaviour
     private float _obstacleRange = 2f;
     [SerializeField]
     private float _speed = 15f;
-    [SerializeField]
-    private List<GameObject> _waypoints;
 
-    private int _randomSpot = 1;
     private Vector2 _walkPosition;
     private State _currentState;
     private Animator _animator;
-    private Vector2 _direction = Vector2.zero;
+    private Vector2 _direction = Vector2.up;
     float timeRemaining = 3f;
 
     private void Awake()
@@ -97,9 +94,12 @@ public class EnemyAI : MonoBehaviour
     private void CheckAngryDistance() 
     {
         LayerMask mask = LayerMask.GetMask("Player");
-        RaycastHit2D raycastHit2D = Physics2D.Raycast(transform.position, _direction, _targetRange, mask);
+        LayerMask gridMask = LayerMask.GetMask("Obstacles");
 
-        if (raycastHit2D)
+        RaycastHit2D raycastHit2D = Physics2D.Raycast(transform.position, _direction, _targetRange, mask);
+        RaycastHit2D raycastHit2DObstacle = Physics2D.Raycast(transform.position, _direction, _obstacleRange, gridMask);
+
+        if (!raycastHit2DObstacle && raycastHit2D)
         {
             _currentState = State.Angry;
             transform.position = Vector2.MoveTowards(transform.position, raycastHit2D.collider.transform.position, _speed * 1.2f * Time.deltaTime);
@@ -129,5 +129,4 @@ public class EnemyAI : MonoBehaviour
             }
         }
     }
-
 }

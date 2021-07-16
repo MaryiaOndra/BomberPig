@@ -64,11 +64,10 @@ public class Bomb : MonoBehaviour
         for (int i = 1; i < bombPower; i++)
         {
             RaycastHit2D hit = Physics2D.Raycast(transform.localPosition, direction, i * distance, gridMask);
-            GameObject explosion;
 
-            if (!hit.collider)
+            if (!hit.collider || hit.collider.GetComponent<Bush>())
             {
-                explosion = Instantiate(_explosionPrefab, (Vector2)transform.localPosition + (i * direction), _explosionPrefab.transform.rotation);
+                var explosion = Instantiate(_explosionPrefab, (Vector2)transform.localPosition + (i * direction), _explosionPrefab.transform.rotation);
                 explosion.transform.SetParent(gameObject.transform);
             }
             else
