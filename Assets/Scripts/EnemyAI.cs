@@ -38,12 +38,12 @@ public class EnemyAI : MonoBehaviour
             case State.Walking:
                 _animator.SetLayerWeight(1, 0);
                 Walking();
-                CheckDistance();
+                CheckAngryDistance();
                 break;
 
             case State.Angry:
                 _animator.SetLayerWeight(1, 1);
-                CheckDistance();
+                CheckAngryDistance();
                 break;
 
             case State.Dirty:
@@ -53,6 +53,8 @@ public class EnemyAI : MonoBehaviour
                     timeRemaining -= Time.deltaTime;
                 else 
                     Walking();
+
+                CheckDistanceToCatch();
                 break;
         }
 
@@ -76,7 +78,7 @@ public class EnemyAI : MonoBehaviour
         }
     }
 
-    private void CheckDistance() 
+    private void CheckAngryDistance() 
     {
         LayerMask mask = LayerMask.GetMask("Player");
         RaycastHit2D raycastHit2D = Physics2D.Raycast(transform.position, _direction, _targetRange, mask);
@@ -86,14 +88,19 @@ public class EnemyAI : MonoBehaviour
             _currentState = State.Angry;
             transform.position = Vector2.MoveTowards(transform.position, raycastHit2D.collider.transform.position, _speed * 1.2f * Time.deltaTime);
 
-            if (Vector2.Distance(transform.position, PlayerController.Instance.transform.position) < MIN_DIST * 10f)
-            {
-                LevelManager.Instance.RestartPanel();
-            }
+            CheckDistanceToCatch();
         }
         else
             _currentState = State.Walking;
-    }    
+    }
+
+    private void CheckDistanceToCatch() 
+    {
+        if (Vector2.Distance(transform.position, PlayerController.Instance.transform.position) < MIN_DIST * 10f)
+        {
+            LevelManager.Instance.RestartPanel();
+        }
+    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
