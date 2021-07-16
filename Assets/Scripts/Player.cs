@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class PlayerController : MonoBehaviour
+public class Player : MonoBehaviour
 {
     private readonly int HORIZ_INT = Animator.StringToHash("Horizontal");
     private readonly int VERT_INT = Animator.StringToHash("Vertical");
@@ -18,8 +18,7 @@ public class PlayerController : MonoBehaviour
     private Vector2 _movement;
     private Animator _animator;
 
-    public static PlayerController Instance { get; private set; }
-    //public static UnityAction OnDropBomb;
+    public static Player Instance { get; private set; }
 
     private void Awake()
     {

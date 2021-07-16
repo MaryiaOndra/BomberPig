@@ -11,9 +11,6 @@ public class LevelManager : MonoBehaviour
     private LevelCreator _gridCreator;
 
     [SerializeField]
-    private List<GameObject> _enemyPrefabs;
-
-    [SerializeField]
     private GameObject _gameOverPanel;
 
     private int _dirtyEnemyCount;

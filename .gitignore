@@ -71,3 +71,4 @@ crashlytics-build.properties
 *.log
 template/Logs/shadercompiler-UnityShaderCompiler.exe0.log
 *.log
+Logs/shadercompiler-UnityShaderCompiler.exe0.log

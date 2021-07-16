@@ -53,10 +53,10 @@ public class EnemyAI : MonoBehaviour
                     timeRemaining -= Time.deltaTime;
                 else 
                     Walking();
-
-                CheckDistanceToCatch();
                 break;
         }
+
+        CheckDistanceToCatch();
 
     }
 
@@ -99,12 +99,10 @@ public class EnemyAI : MonoBehaviour
         RaycastHit2D raycastHit2D = Physics2D.Raycast(transform.position, _direction, _targetRange, mask);
         RaycastHit2D raycastHit2DObstacle = Physics2D.Raycast(transform.position, _direction, _obstacleRange, gridMask);
 
-        if (!raycastHit2DObstacle && raycastHit2D)
+        if (raycastHit2D && !raycastHit2DObstacle)
         {
             _currentState = State.Angry;
             transform.position = Vector2.MoveTowards(transform.position, raycastHit2D.collider.transform.position, _speed * 1.2f * Time.deltaTime);
-
-            CheckDistanceToCatch();
         }
         else
             _currentState = State.Walking;
@@ -112,7 +110,7 @@ public class EnemyAI : MonoBehaviour
 
     private void CheckDistanceToCatch() 
     {
-        if (Vector2.Distance(transform.position, PlayerController.Instance.transform.position) < MIN_DIST * 10f)
+        if (Vector2.Distance(transform.position, Player.Instance.transform.position) < MIN_DIST * 10f)
         {
             LevelManager.Instance.RestartPanel();
         }
