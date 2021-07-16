@@ -16,8 +16,8 @@ public class Bomb : MonoBehaviour
     [SerializeField]
     int bombPower;
 
-    private Vector2 _upAlign = new Vector2(Vector2.up.x + GridCreator._xAlign, Vector2.up.y);
-    private Vector2 _downAlign = new Vector2(Vector2.down.x - GridCreator._xAlign, Vector2.down.y);   
+    private Vector2 _upAlign = new Vector2(Vector2.up.x + LevelCreator._xAlign, Vector2.up.y);
+    private Vector2 _downAlign = new Vector2(Vector2.down.x - LevelCreator._xAlign, Vector2.down.y);   
 
     private void Awake()
     {
@@ -50,11 +50,11 @@ public class Bomb : MonoBehaviour
     {
         _bombSprite.SetActive(false);
 
-        StartCoroutine(CreateExplosion(Vector2.zero, GridCreator._ySize));
-        StartCoroutine(CreateExplosion(_upAlign, GridCreator._ySize));
-        StartCoroutine(CreateExplosion(_downAlign, GridCreator._ySize));
-        StartCoroutine(CreateExplosion(Vector2.right, GridCreator._xSize));
-        StartCoroutine(CreateExplosion(Vector2.left, GridCreator._xSize));
+        StartCoroutine(CreateExplosion(Vector2.zero, LevelCreator._ySize));
+        StartCoroutine(CreateExplosion(_upAlign, LevelCreator._ySize));
+        StartCoroutine(CreateExplosion(_downAlign, LevelCreator._ySize));
+        StartCoroutine(CreateExplosion(Vector2.right, LevelCreator._xSize));
+        StartCoroutine(CreateExplosion(Vector2.left, LevelCreator._xSize));
     }
 
     private IEnumerator CreateExplosion(Vector2 direction, float distance)
