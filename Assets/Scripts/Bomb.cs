@@ -16,20 +16,20 @@ public class Bomb : MonoBehaviour
     [SerializeField]
     int bombPower;
 
-    private Vector2 _upAlign = new Vector2(Vector2.up.x + GridCreator._xAlign, Vector2.up.y);
-    private Vector2 _downAlign = new Vector2(Vector2.down.x - GridCreator._xAlign, Vector2.down.y);   
+    //public static Vector2 UpAlign = new Vector2(Vector2.up.x + LevelCreator._xAlign, Vector2.up.y);
+    //public static Vector2 DownAlign = new Vector2(Vector2.down.x - LevelCreator._xAlign, Vector2.down.y);   
 
     private void Awake()
     {
-        transform.position = AlignToGrid();
+        transform.position = GetGridPointPosition(transform.localPosition);
         StartCoroutine(SetBombTimer(_timeToEplode));
     }
 
-    private Vector2 AlignToGrid() 
+    public static Vector2 GetGridPointPosition(Vector2 startPosition) 
     {
         Vector2 position = Vector2.zero;
         LayerMask gridMask = LayerMask.GetMask("Grid");
-        RaycastHit2D raycastHit2D = Physics2D.Raycast(transform.localPosition, Vector2.right, MIN_DIST, gridMask);
+        RaycastHit2D raycastHit2D = Physics2D.Raycast(startPosition, Vector2.right, MIN_DIST, gridMask);
 
         if (raycastHit2D) 
         {
@@ -50,11 +50,11 @@ public class Bomb : MonoBehaviour
     {
         _bombSprite.SetActive(false);
 
-        StartCoroutine(CreateExplosion(Vector2.zero, GridCreator._ySize));
-        StartCoroutine(CreateExplosion(_upAlign, GridCreator._ySize));
-        StartCoroutine(CreateExplosion(_downAlign, GridCreator._ySize));
-        StartCoroutine(CreateExplosion(Vector2.right, GridCreator._xSize));
-        StartCoroutine(CreateExplosion(Vector2.left, GridCreator._xSize));
+        StartCoroutine(CreateExplosion(Vector2.zero, LevelCreator._ySize));
+        StartCoroutine(CreateExplosion(LevelCreator.UpAlign, LevelCreator._ySize));
+        StartCoroutine(CreateExplosion(LevelCreator.DownAlign, LevelCreator._ySize));
+        StartCoroutine(CreateExplosion(Vector2.right, LevelCreator._xSize));
+        StartCoroutine(CreateExplosion(Vector2.left, LevelCreator._xSize));
     }
 
     private IEnumerator CreateExplosion(Vector2 direction, float distance)
@@ -64,11 +64,10 @@ public class Bomb : MonoBehaviour
         for (int i = 1; i < bombPower; i++)
         {
             RaycastHit2D hit = Physics2D.Raycast(transform.localPosition, direction, i * distance, gridMask);
-            GameObject explosion;
 
-            if (!hit.collider)
+            if (!hit.collider || hit.collider.GetComponent<Bush>())
             {
-                explosion = Instantiate(_explosionPrefab, (Vector2)transform.localPosition + (i * direction), _explosionPrefab.transform.rotation);
+                var explosion = Instantiate(_explosionPrefab, (Vector2)transform.localPosition + (i * direction), _explosionPrefab.transform.rotation);
                 explosion.transform.SetParent(gameObject.transform);
             }
             else

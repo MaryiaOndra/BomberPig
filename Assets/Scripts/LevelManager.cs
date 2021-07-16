@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 public class LevelManager : MonoBehaviour
 {
     [SerializeField]
-    private GridCreator _gridCreator;
+    private LevelCreator _gridCreator;
 
     [SerializeField]
     private List<GameObject> _enemyPrefabs;
@@ -33,7 +33,7 @@ public class LevelManager : MonoBehaviour
     private void Start()
     {
         Time.timeScale = 1;
-        _gridCreator.BuilGrid();
+        _gridCreator.CreateLevel();
     }
 
     public void RestartPanel() 

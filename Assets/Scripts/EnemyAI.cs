@@ -14,21 +14,21 @@ public class EnemyAI : MonoBehaviour
     [SerializeField]
     private float _targetRange = 5f;
     [SerializeField]
-    private float _speed = 15f;
+    private float _obstacleRange = 2f;
     [SerializeField]
-    private List<GameObject> _waypoints;
+    private float _speed = 15f;
 
-    private int _randomSpot = 1;
     private Vector2 _walkPosition;
     private State _currentState;
     private Animator _animator;
-    private Vector2 _direction;
+    private Vector2 _direction = Vector2.up;
     float timeRemaining = 3f;
 
     private void Awake()
     {
         _animator = GetComponent<Animator>();
         _currentState = State.Walking;
+        _direction = GetRandomDirection(_direction);
     }
 
     private void Update()
@@ -62,28 +62,44 @@ public class EnemyAI : MonoBehaviour
 
     private void Walking() 
     {
-        _walkPosition = _waypoints[_randomSpot].transform.position;
-        _direction = (_walkPosition - (Vector2)transform.localPosition).normalized;
         _animator.SetFloat(X, _direction.x);
         _animator.SetFloat(Y, _direction.y);
-
+        _walkPosition = (Vector2)transform.position + _direction;
         transform.position = Vector2.MoveTowards(transform.position, _walkPosition, _speed * Time.deltaTime);
 
-        if (Vector2.Distance(transform.position, _waypoints[_randomSpot].transform.position) < MIN_DIST)
+        LayerMask gridMask = LayerMask.GetMask("Obstacles");
+        RaycastHit2D raycastHit2D = Physics2D.Raycast(transform.position, _direction, _obstacleRange, gridMask);
+
+        if (raycastHit2D)
         {
-            if (_randomSpot >= _waypoints.Count - 1)
-                _randomSpot = 0;
-            else
-                _randomSpot++;
+            _direction = GetRandomDirection(_direction);
         }
+    }
+
+    private Vector2 GetRandomDirection(Vector2 oldDirection) 
+    {
+        Vector2[] directions = new[] { LevelCreator.UpAlign, LevelCreator.DownAlign, Vector2.right, Vector2.left};
+        int randIndex = UnityEngine.Random.Range(0, directions.Length);
+
+        while (directions[randIndex] == oldDirection)
+        {
+            randIndex = UnityEngine.Random.Range(0, directions.Length);
+        }
+
+        var newDirection = directions[randIndex];
+
+        return newDirection;    
     }
 
     private void CheckAngryDistance() 
     {
         LayerMask mask = LayerMask.GetMask("Player");
-        RaycastHit2D raycastHit2D = Physics2D.Raycast(transform.position, _direction, _targetRange, mask);
+        LayerMask gridMask = LayerMask.GetMask("Obstacles");
 
-        if (raycastHit2D)
+        RaycastHit2D raycastHit2D = Physics2D.Raycast(transform.position, _direction, _targetRange, mask);
+        RaycastHit2D raycastHit2DObstacle = Physics2D.Raycast(transform.position, _direction, _obstacleRange, gridMask);
+
+        if (!raycastHit2DObstacle && raycastHit2D)
         {
             _currentState = State.Angry;
             transform.position = Vector2.MoveTowards(transform.position, raycastHit2D.collider.transform.position, _speed * 1.2f * Time.deltaTime);
@@ -112,5 +128,5 @@ public class EnemyAI : MonoBehaviour
                 LevelManager.Instance.CheckLevelComplete();
             }
         }
-    }   
+    }
 }
