@@ -43,6 +43,7 @@ public class EnemyAI : MonoBehaviour
 
             case State.Angry:
                 _animator.SetLayerWeight(1, 1);
+                Walking();
                 CheckAngryDistance();
                 break;
 
@@ -112,7 +113,7 @@ public class EnemyAI : MonoBehaviour
     {
         if (Vector2.Distance(transform.position, Player.Instance.transform.position) < MIN_DIST * 10f)
         {
-            LevelManager.Instance.RestartPanel();
+            LevelManager.Instance.GameOver();
         }
     }
 

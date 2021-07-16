@@ -33,7 +33,7 @@ public class LevelManager : MonoBehaviour
         _gridCreator.CreateLevel();
     }
 
-    public void RestartPanel() 
+    public void GameOver() 
     {
         Time.timeScale = 0;
         _gameOverPanel.SetActive(true);
@@ -50,7 +50,7 @@ public class LevelManager : MonoBehaviour
 
         if (_dirtyEnemyCount == 0)
         {
-            RestartPanel();
+            GameOver();
         }
     }
 }
