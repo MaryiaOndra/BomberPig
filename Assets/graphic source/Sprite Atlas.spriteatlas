@@ -44,7 +44,7 @@ SpriteAtlas:
     variantMultiplier: 1
     packables:
     - {fileID: 102900000, guid: 1bd3431df9e9f8742b8cb955112070c1, type: 3}
-    totalSpriteSurfaceArea: 9714197
+    totalSpriteSurfaceArea: 9728057
     bindAsDefault: 1
     isAtlasV2: 0
     cachedData: {fileID: 0}
@@ -54,6 +54,7 @@ SpriteAtlas:
   - {fileID: -2359721649071251821, guid: 93240b7021b8e774497f2ced9b3f4197, type: 3}
   - {fileID: 5361668627280901228, guid: 93240b7021b8e774497f2ced9b3f4197, type: 3}
   - {fileID: 6612374894605627977, guid: 93240b7021b8e774497f2ced9b3f4197, type: 3}
+  - {fileID: 6545382614753218560, guid: 4c143af068825a9459d0289397681acc, type: 3}
   - {fileID: -2613247888821195678, guid: 0c3a7511442128b4fb724b1da4316aef, type: 3}
   - {fileID: 3191130952945803347, guid: de7d4751543c8444e8937daeb7a1c00d, type: 3}
   - {fileID: -4697590009104051591, guid: de7d4751543c8444e8937daeb7a1c00d, type: 3}
@@ -89,6 +90,7 @@ SpriteAtlas:
   - dog_angry_1
   - dog_angry_2
   - dog_angry_3
+  - bush_0
   - bomb_0
   - farmer_4
   - farmer_3

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PlayerController : MonoBehaviour
 {
@@ -18,6 +19,7 @@ public class PlayerController : MonoBehaviour
     private Animator _animator;
 
     public static PlayerController Instance { get; private set; }
+    //public static UnityAction OnDropBomb;
 
     private void Awake()
     {
@@ -28,17 +30,22 @@ public class PlayerController : MonoBehaviour
 
         _rB = GetComponent<Rigidbody2D>();
         _animator = GetComponent<Animator>();
+        VirtualInputManager.OnDropBomb = ThrowBomb;
     }
 
     void Update()
     {
-       _movement.y = Input.GetAxisRaw("Vertical");
-       _movement.x = Input.GetAxisRaw("Horizontal");
-
+#if UNITY_STANDALONE
+        _movement.y = Input.GetAxisRaw("Vertical");
+       _movement.x = Input.GetAxisRaw("Horizontal");      
         if (Input.GetKeyDown(KeyCode.Space))
             ThrowBomb(transform.position);
 
+#elif UNITY_ANDROID
+        _movement.y = VirtualInputManager.Instance.YAxis;
+        _movement.x = VirtualInputManager.Instance.XAxis;
 
+#endif
         _animator.SetFloat(HORIZ_INT, _movement.x);
         _animator.SetFloat(VERT_INT, _movement.y);
     }
@@ -49,7 +56,7 @@ public class PlayerController : MonoBehaviour
     }
 
 
-    private void ThrowBomb(Vector2 position) 
+    private void ThrowBomb() 
     {
         Instantiate(_bombPrefab, transform.position , Quaternion.identity);
     }  
