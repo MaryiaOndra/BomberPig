@@ -7,6 +7,8 @@ public class LevelCreator : MonoBehaviour
     public static readonly float _xSize = 1.1f;
     public static readonly float _ySize = 1f;
     public static readonly float _xAlign = 1f / 9f;
+    public static Vector2 UpAlign = new Vector2(Vector2.up.x + LevelCreator._xAlign, Vector2.up.y);
+    public static Vector2 DownAlign = new Vector2(Vector2.down.x - LevelCreator._xAlign, Vector2.down.y);
 
     [SerializeField]
     private LevelInfo _levelInfo;

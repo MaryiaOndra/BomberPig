@@ -16,20 +16,20 @@ public class Bomb : MonoBehaviour
     [SerializeField]
     int bombPower;
 
-    private Vector2 _upAlign = new Vector2(Vector2.up.x + LevelCreator._xAlign, Vector2.up.y);
-    private Vector2 _downAlign = new Vector2(Vector2.down.x - LevelCreator._xAlign, Vector2.down.y);   
+    //public static Vector2 UpAlign = new Vector2(Vector2.up.x + LevelCreator._xAlign, Vector2.up.y);
+    //public static Vector2 DownAlign = new Vector2(Vector2.down.x - LevelCreator._xAlign, Vector2.down.y);   
 
     private void Awake()
     {
-        transform.position = AlignToGrid();
+        transform.position = GetGridPointPosition(transform.localPosition);
         StartCoroutine(SetBombTimer(_timeToEplode));
     }
 
-    private Vector2 AlignToGrid() 
+    public static Vector2 GetGridPointPosition(Vector2 startPosition) 
     {
         Vector2 position = Vector2.zero;
         LayerMask gridMask = LayerMask.GetMask("Grid");
-        RaycastHit2D raycastHit2D = Physics2D.Raycast(transform.localPosition, Vector2.right, MIN_DIST, gridMask);
+        RaycastHit2D raycastHit2D = Physics2D.Raycast(startPosition, Vector2.right, MIN_DIST, gridMask);
 
         if (raycastHit2D) 
         {
@@ -51,8 +51,8 @@ public class Bomb : MonoBehaviour
         _bombSprite.SetActive(false);
 
         StartCoroutine(CreateExplosion(Vector2.zero, LevelCreator._ySize));
-        StartCoroutine(CreateExplosion(_upAlign, LevelCreator._ySize));
-        StartCoroutine(CreateExplosion(_downAlign, LevelCreator._ySize));
+        StartCoroutine(CreateExplosion(LevelCreator.UpAlign, LevelCreator._ySize));
+        StartCoroutine(CreateExplosion(LevelCreator.DownAlign, LevelCreator._ySize));
         StartCoroutine(CreateExplosion(Vector2.right, LevelCreator._xSize));
         StartCoroutine(CreateExplosion(Vector2.left, LevelCreator._xSize));
     }
