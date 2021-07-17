@@ -7,7 +7,8 @@ public class EnemyAI : MonoBehaviour
 {
     private enum State { Walking, Angry, Dirty}
 
-    private const float MIN_DIST = 0.1f;
+    //private const float MIN_DIST = 0.1f;
+    private const float CATCH_DIST = 0.5f;
     private readonly int X = Animator.StringToHash("x");
     private readonly int Y = Animator.StringToHash("y");
 
@@ -16,13 +17,15 @@ public class EnemyAI : MonoBehaviour
     [SerializeField]
     private float _obstacleRange = 2f;
     [SerializeField]
-    private float _speed = 15f;
+    private float _speed = 15f;   
+    [SerializeField]
+    private float _angryAcceleration = 1.2f;
 
     private Vector2 _walkPosition;
     private State _currentState;
-    private Animator _animator;
     private Vector2 _direction = Vector2.up;
-    float timeRemaining = 3f;
+    private Animator _animator;
+    private float _timeRemaining = 3f;
 
     private void Awake()
     {
@@ -50,8 +53,8 @@ public class EnemyAI : MonoBehaviour
             case State.Dirty:
                 _animator.SetLayerWeight(2, 1);
 
-                if (timeRemaining > 0)
-                    timeRemaining -= Time.deltaTime;
+                if (_timeRemaining > 0)
+                    _timeRemaining -= Time.deltaTime;
                 else 
                     Walking();
                 break;
@@ -59,22 +62,34 @@ public class EnemyAI : MonoBehaviour
 
         CheckDistanceToCatch();
 
+        _animator.SetFloat(X, _direction.x);
+        _animator.SetFloat(Y, _direction.y);
     }
 
     private void Walking() 
     {
-        _animator.SetFloat(X, _direction.x);
-        _animator.SetFloat(Y, _direction.y);
-        _walkPosition = (Vector2)transform.position + _direction;
-        transform.position = Vector2.MoveTowards(transform.position, _walkPosition, _speed * Time.deltaTime);
+        LayerMask obstaclesMask = LayerMask.GetMask("Obstacles");
+        RaycastHit2D obstaclePoint = Physics2D.Raycast(transform.position, _direction, _obstacleRange, obstaclesMask);
 
-        LayerMask gridMask = LayerMask.GetMask("Obstacles");
-        RaycastHit2D raycastHit2D = Physics2D.Raycast(transform.position, _direction, _obstacleRange, gridMask);
-
-        if (raycastHit2D)
+        if ( !obstaclePoint && CheckWalkPosition())
+        {
+            _walkPosition = CheckWalkPosition().collider.transform.position;
+            transform.position = Vector2.MoveTowards(transform.position, _walkPosition, _speed * Time.deltaTime);
+        }
+        else
         {
             _direction = GetRandomDirection(_direction);
         }
+    }
+
+    private RaycastHit2D CheckWalkPosition() 
+    {
+        Vector2 walkPos = (Vector2)transform.position + _direction;
+
+        LayerMask gridMask = LayerMask.GetMask("Grid");
+        RaycastHit2D[] gridHits = Physics2D.LinecastAll(transform.position, walkPos, gridMask);
+        RaycastHit2D gridHit = gridHits[gridHits.Length - 1];
+        return gridHit;
     }
 
     private Vector2 GetRandomDirection(Vector2 oldDirection) 
@@ -94,24 +109,23 @@ public class EnemyAI : MonoBehaviour
 
     private void CheckAngryDistance() 
     {
-        LayerMask mask = LayerMask.GetMask("Player");
-        LayerMask gridMask = LayerMask.GetMask("Obstacles");
+        LayerMask playerMask = LayerMask.GetMask("Player");
 
-        RaycastHit2D raycastHit2D = Physics2D.Raycast(transform.position, _direction, _targetRange, mask);
-        RaycastHit2D raycastHit2DObstacle = Physics2D.Raycast(transform.position, _direction, _obstacleRange, gridMask);
+        RaycastHit2D hitPlayer = Physics2D.Raycast(transform.position, _direction, _targetRange, playerMask);
 
-        if (raycastHit2D && !raycastHit2DObstacle)
+        if (hitPlayer)
         {
             _currentState = State.Angry;
-            transform.position = Vector2.MoveTowards(transform.position, raycastHit2D.collider.transform.position, _speed * 1.2f * Time.deltaTime);
+            transform.position = Vector2.MoveTowards(transform.position, hitPlayer.collider.transform.position, _speed * _angryAcceleration * Time.deltaTime);
         }
+
         else
             _currentState = State.Walking;
     }
 
     private void CheckDistanceToCatch() 
     {
-        if (Vector2.Distance(transform.position, Player.Instance.transform.position) < MIN_DIST * 10f)
+        if (Vector2.Distance(transform.position, Player.Instance.transform.position) < CATCH_DIST)
         {
             LevelManager.Instance.GameOver();
         }

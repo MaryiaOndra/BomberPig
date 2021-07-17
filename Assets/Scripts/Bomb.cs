@@ -14,13 +14,15 @@ public class Bomb : MonoBehaviour
     [SerializeField]
     private float _timeToEplode;
     [SerializeField]
-    int bombPower;
+    private int _bombPower;
 
-    //public static Vector2 UpAlign = new Vector2(Vector2.up.x + LevelCreator._xAlign, Vector2.up.y);
-    //public static Vector2 DownAlign = new Vector2(Vector2.down.x - LevelCreator._xAlign, Vector2.down.y);   
+    public static int BombPower;
 
     private void Awake()
     {
+        if(BombPower == 0)
+            BombPower = _bombPower;
+
         transform.position = GetGridPointPosition(transform.localPosition);
         StartCoroutine(SetBombTimer(_timeToEplode));
     }
@@ -61,7 +63,7 @@ public class Bomb : MonoBehaviour
     {
         LayerMask gridMask = LayerMask.GetMask("Obstacles");
 
-        for (int i = 1; i < bombPower; i++)
+        for (int i = 1; i < _bombPower; i++)
         {
             RaycastHit2D hit = Physics2D.Raycast(transform.localPosition, direction, i * distance, gridMask);
 

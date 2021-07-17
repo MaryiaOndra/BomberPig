@@ -79,7 +79,7 @@ MonoBehaviour:
   _explosionPrefab: {fileID: 717242483113100773, guid: d0cfa7aee16f65d4baa03bdb9b250872, type: 3}
   _bombSprite: {fileID: 8290970236719772523}
   _timeToEplode: 2
-  bombPower: 3
+  _bombPower: 2
 --- !u!1 &8290970236719772523
 GameObject:
   m_ObjectHideFlags: 0

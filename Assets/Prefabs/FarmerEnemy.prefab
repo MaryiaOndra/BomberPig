@@ -48,7 +48,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _targetRange: 7
-  _obstacleRange: 0.7
+  _obstacleRange: 1
   _speed: 2
 --- !u!50 &1800074270365424745
 Rigidbody2D:
