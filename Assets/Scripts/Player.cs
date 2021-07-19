@@ -52,6 +52,7 @@ public class Player : MonoBehaviour
     private void FixedUpdate()
     {
         _rB.MovePosition(_rB.position + _movement * _speed * Time.fixedDeltaTime);
+        Debug.Log("FixedUpdate" + VirtualInputManager.Instance.YAxis + VirtualInputManager.Instance.XAxis);
     }
 
 
