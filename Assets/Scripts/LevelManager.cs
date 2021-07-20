@@ -8,12 +8,17 @@ using UnityEngine.SceneManagement;
 public class LevelManager : MonoBehaviour
 {
     [SerializeField]
+    private LevelInfo _levelInfo;
+
+    [SerializeField]
     private LevelCreator _gridCreator;
 
     [SerializeField]
     private GameObject _gameOverPanel;
 
     private int _dirtyEnemyCount;
+    
+    public LevelInfo LevelInfo => _levelInfo;
 
     public static LevelManager Instance { get; private set; }
 

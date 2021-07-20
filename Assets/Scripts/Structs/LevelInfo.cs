@@ -13,6 +13,8 @@ public struct LevelInfo
     private GameObject _pointPrefab;
     [SerializeField]
     private GameObject _stonePrefab;
+    [SerializeField]
+    private GameObject _bompPrefab;
     [Header("Info")]
     [SerializeField]
     private List<PersonInfo> _charactersInfo;
@@ -25,5 +27,6 @@ public struct LevelInfo
     public GameObject StonePrefab => _stonePrefab;
     public List<PersonInfo> CharactersInfo => _charactersInfo;
     public BushInfo BushesInfo => _bushesInfo;
+    public GameObject BobmPrefab => _bompPrefab;
 }
  public enum LevelOrder{ Level01, Level02, Level03  }

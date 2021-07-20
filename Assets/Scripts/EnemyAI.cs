@@ -125,7 +125,7 @@ public class EnemyAI : MonoBehaviour
 
     private void CheckDistanceToCatch() 
     {
-        if (Vector2.Distance(transform.position, Player.Instance.transform.position) < CATCH_DIST)
+        if (Vector2.Distance(transform.position, PlayerMovement.Instance.transform.position) < CATCH_DIST)
         {
             LevelManager.Instance.GameOver();
         }

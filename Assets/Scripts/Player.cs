@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
+[Obsolete]
 public class Player : MonoBehaviour
 {
     private readonly int HORIZ_INT = Animator.StringToHash("Horizontal");

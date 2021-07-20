@@ -324,7 +324,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5.6
+  orthographic size: 6.335722
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -402,6 +402,7 @@ MonoBehaviour:
     _gridSize: {x: 17, y: 9}
     _pointPrefab: {fileID: 7786772518753608392, guid: 32d9f0eb3c9d35a4996caa207de9a8f2, type: 3}
     _stonePrefab: {fileID: 4593906540444294231, guid: 1c76fb1fefa07144bbac9482eb5a89e0, type: 3}
+    _bompPrefab: {fileID: 0}
     _charactersInfo:
     - _prefab: {fileID: 7595648818057942601, guid: 8ffefb5759279da4185e9d75a3f32434, type: 3}
       _coordinates: {x: 4, y: 8}
@@ -475,6 +476,42 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce8f64a62c39f8d4a80f66cac06f5567, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _levelInfo:
+    _level: 0
+    _gridSize: {x: 17, y: 9}
+    _pointPrefab: {fileID: 7786772518753608392, guid: 32d9f0eb3c9d35a4996caa207de9a8f2, type: 3}
+    _stonePrefab: {fileID: 4593906540444294231, guid: 1c76fb1fefa07144bbac9482eb5a89e0, type: 3}
+    _bompPrefab: {fileID: 4205913171786148723, guid: cf10dd34dbf06e54ba63568da9d70fac, type: 3}
+    _charactersInfo:
+    - _prefab: {fileID: 7595648818057942601, guid: 8ffefb5759279da4185e9d75a3f32434, type: 3}
+      _coordinates: {x: 4, y: 8}
+    - _prefab: {fileID: 343894601232527481, guid: df337b323a8434e4e9bcbad380b94aee, type: 3}
+      _coordinates: {x: 14, y: 6}
+    - _prefab: {fileID: 1800074270365424749, guid: 213ca425448119a4db3b75825ff50141, type: 3}
+      _coordinates: {x: 6, y: 2}
+    _bushesInfo:
+      _bushPrefab: {fileID: 611945564372009159, guid: b2066395c0d381f40afc183650c9998c, type: 3}
+      _coordinates:
+      - {x: 0, y: 2}
+      - {x: 2, y: 6}
+      - {x: 4, y: 0}
+      - {x: 4, y: 4}
+      - {x: 5, y: 4}
+      - {x: 6, y: 8}
+      - {x: 8, y: 8}
+      - {x: 8, y: 1}
+      - {x: 8, y: 2}
+      - {x: 8, y: 3}
+      - {x: 10, y: 2}
+      - {x: 10, y: 4}
+      - {x: 11, y: 0}
+      - {x: 11, y: 6}
+      - {x: 12, y: 0}
+      - {x: 13, y: 0}
+      - {x: 12, y: 6}
+      - {x: 14, y: 2}
+      - {x: 14, y: 8}
+      - {x: 16, y: 6}
   _gridCreator: {fileID: 597705639}
   _gameOverPanel: {fileID: 835835803}
 --- !u!1 &662354500

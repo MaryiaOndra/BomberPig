@@ -10,9 +10,6 @@ public class LevelCreator : MonoBehaviour
     public static Vector2 UpAlign = new Vector2(Vector2.up.x + LevelCreator._xAlign, Vector2.up.y);
     public static Vector2 DownAlign = new Vector2(Vector2.down.x - LevelCreator._xAlign, Vector2.down.y);
 
-    [SerializeField]
-    private LevelInfo _levelInfo;
-
     private Vector3 _startPointPos;
     private List<GridPoint> _gridPoints = new List<GridPoint>();
 
@@ -27,14 +24,16 @@ public class LevelCreator : MonoBehaviour
     private void SetGrid() 
     {
         _startPointPos = transform.position;
+        Vector2 gridSize = LevelManager.Instance.LevelInfo.GridSize;
+        GameObject pointPrefab = LevelManager.Instance.LevelInfo.PointPrefab;
 
-        for (int i = 0; i < _levelInfo.GridSize.y; i++)
+        for (int i = 0; i < gridSize.y; i++)
         {
             _startPointPos.x = transform.position.x + _xAlign * i;
 
-            for (int j = 0; j < _levelInfo.GridSize.x; j++)
+            for (int j = 0; j < gridSize.x; j++)
             {
-                var point = GameObject.Instantiate(_levelInfo.PointPrefab, transform);
+                var point = Instantiate(pointPrefab, transform);
                 point.transform.position = _startPointPos;
                 _startPointPos.x += _xSize;
 
@@ -51,13 +50,15 @@ public class LevelCreator : MonoBehaviour
 
     private void SetStones() 
     {
+        GameObject stonePrefab = LevelManager.Instance.LevelInfo.StonePrefab;
+
         for (int i = 0; i < _gridPoints.Count; i++)
         {
             if ((_gridPoints[i].Y % 2) != 0)
             {
                 if ((_gridPoints[i].X % 2) != 0)
                 {
-                    var stone = Instantiate(_levelInfo.StonePrefab, transform);
+                    var stone = Instantiate(stonePrefab, transform);
                     stone.transform.position = _gridPoints[i].transform.position;
                     _gridPoints.Remove(_gridPoints[i]);
                 }
@@ -67,13 +68,16 @@ public class LevelCreator : MonoBehaviour
 
     private void SetBushes() 
     {
-        for (int i = 0; i < _levelInfo.BushesInfo.Coordinates.Count; i++)
+        GameObject bushPrefab = LevelManager.Instance.LevelInfo.BushesInfo.BushPrefab;
+        List<Vector2Int> bushesCoordinates = LevelManager.Instance.LevelInfo.BushesInfo.Coordinates;
+
+        for (int i = 0; i < bushesCoordinates.Count; i++)
         {
-            var _serchPoint = _levelInfo.BushesInfo.Coordinates[i];
+            var _serchPoint = bushesCoordinates[i];
             GridPoint bushPoint = _gridPoints.Find(_p => _p.X == _serchPoint.x && _p.Y == _serchPoint.y);
             if (bushPoint != null)
             {
-                var bush = Instantiate(_levelInfo.BushesInfo.BushPrefab, transform);
+                var bush = Instantiate(bushPrefab, transform);
                 bush.transform.position = bushPoint.transform.position;
             }
         }
@@ -81,12 +85,14 @@ public class LevelCreator : MonoBehaviour
 
     private void SetCharacters() 
     {
-        for (int i = 0; i < _levelInfo.CharactersInfo.Count; i++)
+        List<PersonInfo> characters = LevelManager.Instance.LevelInfo.CharactersInfo;
+
+        for (int i = 0; i < characters.Count; i++)
         {
-            Vector2Int coordinates = _levelInfo.CharactersInfo[i].Coordinates;
+            Vector2Int coordinates = characters[i].Coordinates;
 
             GridPoint characterPoint = _gridPoints.Find(_p => _p.X == coordinates.x && _p.Y == coordinates.y);
-            var character = Instantiate(_levelInfo.CharactersInfo[i].Prefab, transform);
+            var character = Instantiate(characters[i].Prefab, transform);
             character.transform.position = characterPoint.transform.position;
         }
     }

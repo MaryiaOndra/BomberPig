@@ -4,36 +4,56 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    private readonly int HORIZ_INT = Animator.StringToHash("Horizontal");
+    private readonly int VERT_INT = Animator.StringToHash("Vertical");
+
     [SerializeField]
-    private float _speed;
+    private float _timeTOMove = 0.2f;
 
     private bool _isMoving;
     private Vector2 _origPos, _targetPos;
-    private float _timeTOMove = 0.2f;
+    private Animator _animator;
+    Vector2 _moveDirection;
+    public static PlayerMovement Instance { get; private set; }
 
-
-    void Update()
+    private void Awake()
     {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+
+        _animator = GetComponent<Animator>();
+        VirtualInputManager.OnDropBomb = ThrowBomb;
+        
+    }
+
+    private void Update()
+    {
+        _moveDirection = new Vector2(VirtualInputManager.Instance.XAxis, VirtualInputManager.Instance.YAxis);
+
+        //if (_moveDirection.magnitude > 0)
+        //{
+        //    CheckDirectionObstacles(_moveDirection);
+        //}
+
         if (Input.GetKey(KeyCode.UpArrow) && !_isMoving)
         {
             CheckDirectionObstacles(LevelCreator.UpAlign);
-             //StartCoroutine(MovePlayer(LevelCreator.UpAlign));
         }
         else if (Input.GetKey(KeyCode.DownArrow) && !_isMoving)
         {
             CheckDirectionObstacles(LevelCreator.DownAlign);
-            //StartCoroutine(MovePlayer(LevelCreator.DownAlign));
         }
         else if (Input.GetKey(KeyCode.LeftArrow) && !_isMoving)
         {
             CheckDirectionObstacles(Vector2.left);
-            // StartCoroutine(MovePlayer(Vector2.left));
         }
-        else if (Input.GetKey(KeyCode.RightArrow) && !_isMoving) 
+        else if (Input.GetKey(KeyCode.RightArrow) && !_isMoving)
         {
             CheckDirectionObstacles(Vector2.right);
-            //StartCoroutine(MovePlayer(Vector2.right));
         }
+
     }
 
     private void CheckDirectionObstacles(Vector2 direction)
@@ -49,9 +69,10 @@ public class PlayerMovement : MonoBehaviour
 
         if (!obstaclePoint && gridHit)
         {
-            StartCoroutine(MovePlayer(gridHit.transform.position));
+             StartCoroutine(MovePlayer(gridHit.transform.position));
+            _animator.SetFloat(HORIZ_INT, direction.x);
+            _animator.SetFloat(VERT_INT, direction.y);
         }
-        else {Debug.Log("Is obstacle"); }
     }
 
     private IEnumerator MovePlayer(Vector2 targetPos) 
@@ -71,5 +92,12 @@ public class PlayerMovement : MonoBehaviour
         transform.position = targetPos;
 
         _isMoving = false;
+    }
+
+    private void ThrowBomb()
+    {
+        GameObject bomb = LevelManager.Instance.LevelInfo.BobmPrefab;
+        
+        Instantiate(bomb, transform.position, Quaternion.identity);
     }
 }
