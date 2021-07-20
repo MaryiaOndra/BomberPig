@@ -9,7 +9,6 @@ public class ControlButtonsInput : MonoBehaviour
     {
         VirtualInputManager.Instance.YAxis = 0f;
         VirtualInputManager.Instance.XAxis = 0f;
-        Debug.Log("ReleaseButton" + VirtualInputManager.Instance.YAxis + VirtualInputManager.Instance.XAxis);
     }
 
     public void VerticalMove(int value) 

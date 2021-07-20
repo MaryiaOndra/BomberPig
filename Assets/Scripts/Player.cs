@@ -16,6 +16,7 @@ public class Player : MonoBehaviour
 
     private Rigidbody2D _rB;
     private Vector2 _movement;
+    private Vector2 _direction;
     private Animator _animator;
 
     public static Player Instance { get; private set; }
@@ -41,7 +42,7 @@ public class Player : MonoBehaviour
             ThrowBomb(transform.position);
 
 #elif UNITY_ANDROID
-        _movement.y = VirtualInputManager.Instance.YAxis;
+        _movement.y = VirtualInputManager.Instance.YAxis * LevelCreator._xSize;
         _movement.x = VirtualInputManager.Instance.XAxis;
 
 #endif
@@ -51,8 +52,7 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
-        _rB.MovePosition(_rB.position + _movement * _speed * Time.fixedDeltaTime);
-        Debug.Log("FixedUpdate" + VirtualInputManager.Instance.YAxis + VirtualInputManager.Instance.XAxis);
+         _rB.MovePosition(_rB.position + _movement * _speed * Time.fixedDeltaTime);
     }
 
 
